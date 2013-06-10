@@ -78,6 +78,10 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	   requestFocus();
 	   backgroundX = 0;
 	   backgroundY = -background.getHeight(null)/4;
+	   alienTime = 1000;
+	   //Shouldn't gun state be on Player anyway?
+	   gunState = 1;
+	   player.shieldTime = 0
 	   boss.difficulty = 1;
 	   score = 0;
 	   level = 1;
@@ -127,9 +131,11 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	    render();
 	  } else {
 	    levelDone();
+	    /*
 		try{
 		 Thread.sleep(2000);
 		}catch(Exception e){}
+	  	*/
 	  }
 	  
 	  g.dispose();

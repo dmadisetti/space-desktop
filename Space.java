@@ -78,6 +78,8 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	   requestFocus();
 	   backgroundX = 0;
 	   backgroundY = -background.getHeight(null)/4;
+	   score = 0;
+	   level = 1;
 	   reset(1);
 	}
 	
@@ -342,9 +344,11 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	    g.setColor(Color.blue);
 	    g.drawString("Your Score: "+ score,400,450);
 
-		if(!reset)
-			reset = true;
-
+	    if(!reset){
+	      reset = true;
+	      buffer.show();
+	    }
+		
 		if(!transition)
 			return;
 
@@ -381,12 +385,11 @@ public class Space extends Canvas implements KeyListener,Runnable{
 
 	  g.dispose();
 
-	  init();
-
-
-	  
 	  if(score > highScore)
 	    highScore = score;
+	
+	  init();
+
 	}
 
 	private void reset(int level){

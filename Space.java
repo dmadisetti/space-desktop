@@ -9,7 +9,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 
     final static int HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
     final static int WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
-	final int  TARGET_AMOUNT = 25;
+	final int TARGET_AMOUNT = 25;
     Player player;
 	Boss boss;
 	Thread game;
@@ -18,6 +18,8 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	CopyOnWriteArrayList<Alien> aliens = new CopyOnWriteArrayList<Alien>();
 	CopyOnWriteArrayList<Bonus> bonuses = new CopyOnWriteArrayList<Bonus>();
 	CopyOnWriteArrayList<Explosion> explosions = new CopyOnWriteArrayList<Explosion>();
+	boolean transition = false;
+	boolean reset = false;
 	boolean leftPressed = false;
 	boolean rightPressed = false;
 	boolean upPressed = false;
@@ -34,9 +36,6 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	boolean explosionHappened = false;
 	boolean bossReached = false;
 	boolean bossReady = false;
-	boolean singleShot = false;
-	boolean triShot = true;
-	boolean fiveShot = false;
 	long shootTime = 300;
 	long lastShotTime = 0;
 	long alienTime = 1000;
@@ -77,34 +76,9 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	public void init() {
 	   addKeyListener(this);	
 	   requestFocus();
-	   remEnemies = TARGET_AMOUNT;
-	   lastShotTime = 0;
-	   alienTime = 1000;
-	   level = 1;
-	   score = 0;
-	   gunState = 0;
-	   bonusTime = 5;
 	   backgroundX = 0;
 	   backgroundY = -background.getHeight(null)/4;
-	   singleShot = true;
-	   triShot = false;
-	   fiveShot = false;
-	   player.isDead = false;
-	   boss.isDead = false;
-	   isPaused = false;
-	   bossReached = false;
-	   bossReady = false;
-	   explosionHappened = false;
-	   youWin = false;
-	   youLose = false;
-	   gameOver = false;
-	   levelDone = false;
-	   player.shieldTime = 0;
-	   player.setHealth(100);
-	   boss.setHealth(400);
-	   boss.difficulty = 1;
-	   player.setX(383);
-	   player.setY(512);
+	   reset(1);
 	}
 	
 	public void startGame() {
@@ -162,187 +136,178 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	public void keyPressed(KeyEvent evt) {
 	 int key = evt.getKeyCode();
 
-      if (key == KeyEvent.VK_RIGHT) {
+      if (key == KeyEvent.VK_RIGHT)
 	    rightPressed = true;
-	  } 	
 
-      if (key == KeyEvent.VK_LEFT) {
+      if (key == KeyEvent.VK_LEFT)
 	    leftPressed = true;
-	  }	  
 	  
-	  if (key == KeyEvent.VK_UP) {
+	  if (key == KeyEvent.VK_UP)
 	    upPressed = true;
-	  }
 	  
-	  if (key == KeyEvent.VK_DOWN) {
+	  if (key == KeyEvent.VK_DOWN)
 	    downPressed = true;
-	  }
 	  
-	  if (key == KeyEvent.VK_SPACE) {
+	  if (key == KeyEvent.VK_SPACE)
 	    shootPressed = true;		
-	  }
 	  
-	  if (key == KeyEvent.VK_P || key == KeyEvent.VK_ESCAPE) {
+	  if (key == KeyEvent.VK_P || key == KeyEvent.VK_ESCAPE)
 		isPaused = !isPaused;
-	  }	  
 	  
-	  if(key == KeyEvent.VK_F && evt.isAltDown()) {
+	  if(key == KeyEvent.VK_F && evt.isAltDown()) 
 	    stopGame();
-	  }
 
-      if (key == KeyEvent.VK_ENTER) {
-	    if (gameOver){
-		  init();
-		} 
-	  }	  
+      if (key == KeyEvent.VK_ENTER) 
+      	if(reset) transition = true;
+	  
 	}
 	public void keyReleased(KeyEvent evt) {
 	   int key = evt.getKeyCode();
 
-      if (key == KeyEvent.VK_RIGHT) {
+	  // Move right
+      if (key == KeyEvent.VK_RIGHT)
 	    rightPressed = false;
-	  } 	
-
-      if (key == KeyEvent.VK_LEFT) {
+	  
+	  // Move Left
+      if (key == KeyEvent.VK_LEFT)
 	    leftPressed = false;
-	  }
 	  
-	  if (key == KeyEvent.VK_UP) {
+	  // Move Up
+	  if (key == KeyEvent.VK_UP)
 	    upPressed = false;
-	  }
 	  
-	  if (key == KeyEvent.VK_DOWN) {
+	  // Move Down
+	  if (key == KeyEvent.VK_DOWN)
 	    downPressed = false;
-	  }
 	  
-	  if (key == KeyEvent.VK_SPACE) {
+	  // Shoot baby, shoot!
+	  if (key == KeyEvent.VK_SPACE)
 	    shootPressed = false;
-		
-	  }
+	
 	}
 	public void keyTyped(KeyEvent evt) {}
 	
 	public void update() {
+	  // Check for gameover
 	  if (player.isDead){;
 	    aliens.clear();
 		bullets.clear();
 		youLose = true;
 		gameOver = true;
+	  	return;
+	  // Check for level promotion
 	  } else if(boss.isDead) {
-	   processExplosions();
+	    processExplosions();
 	    aliens.clear();
 		bullets.clear();
 		youWin = true;
 		levelDone = true;
-	  } else {
-	
+	  	return;
+	  }
+
+	  // Proceed as normal. Update some jazz.
 	  player.update(this);
-	  for (Bullet bullet : bullets) {
+	  for (Bullet bullet : bullets)
 	    bullet.update(this);
-	  }
-	  
-	  for(Alien alien : aliens) {
+	 
+	  for(Alien alien : aliens)
 	     alien.update(this);
-	  }
 	  
-	  for(Bonus bonus : bonuses) {
+	  for(Bonus bonus : bonuses)
 	    bonus.update(this);
-	  }
+	 
 	  
-	  if (remEnemies > 0) {
+	  // If aliens make em!
+	  if (remEnemies > 0)
 	    createAlien();
-	  } else {
+	  else
 	    bossReached = true;
-	  }
 	  
-	  if (bossReached && aliens.size() == 0){
+	  // Boss reached but are they dead yet?
+	  if (bossReached && aliens.size()==0)
 	    bossReady = true;
-	  } 
-	  
+	   
+	  // Let's throw in some magic
 	  createBonus();
 	  processExplosions();
-	  
-	  if (bossReady) {
+
+	  // Are you ready?
+	  if (bossReady)
 	    boss.update(this);
-	  }
 	  
-	  if(gunState == 0) {
-	    singleShot = true;
-	    triShot = false;
-	    fiveShot = false;
-	  } else if(gunState == 1) {
-	    singleShot = false;
-	    triShot = true;
-	    fiveShot = false;
-	  } else if (gunState == 2) {
-	    singleShot = false;
-	   triShot = false;
-	   fiveShot = true; 
-	  }
-	  
-	  if (shootPressed) {
+	  // pretty close to natural language there
+	  if (shootPressed)
 	    tryToShoot();
-	  }
-       backgroundY+=2;
-		if(backgroundY >= 25){
-			backgroundY = -background.getHeight(null)/4;
-		}
-	 }
+	  
+	  // Be pretty cool if we could generate background instead. Notice jumping
+      backgroundY+=2;
+	  if(backgroundY >= 25)
+		backgroundY = -background.getHeight(null)/4;
+		
 	}
 	
 	public void render() {
 	  player.draw(g);
-	  for(Bullet bullet : bullets) {
+	  
+	  // Drawing drawing drawing
+	  for(Bullet bullet : bullets)
 	    bullet.draw(g); 
-	  }
-	  for(Alien alien : aliens) {
+	  
+	  for(Alien alien : aliens)
 	     alien.draw(g);
-	  }
 	  
-	  for(Explosion explosion : explosions){
+	  for(Explosion explosion : explosions)
 	     explosion.drawChildren(this);
-	  }
 	  
-	  for(Bonus bonus : bonuses) {
+	  for(Bonus bonus : bonuses)
 	    bonus.draw(g);
-	  }
 	  
-	  if (bossReady){
+	  if (bossReady)
 	    boss.draw(g);
-	  }
+	  
 	}
 	
 	public void tryToShoot() {
-	  if (System.currentTimeMillis() - lastShotTime < shootTime) {
+	  if (System.currentTimeMillis() - lastShotTime < shootTime)
 	    return;
-	  }else {
+	  
+	  // Reset lastShotTime to now
 	  lastShotTime = System.currentTimeMillis();
-       if(singleShot){
-           bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10,0,"shot.gif")); 	   
-	   }else if(triShot){
-	     for(int i = 0; i < 3; i++){  
-		   bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 45)-45,"shot.gif"));
-	     }
-	   } else if(fiveShot) {
-	     for(int i = 0; i < 5; i++){  
-		   bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 22.5)-45,"shot.gif"));
-	     } 
-	   }
+
+	  // Switches are cleaner
+      switch(gunState){
+      	case 0:
+          bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10,0,"shot.gif")); 	   
+	 	  break;
+	  	case 1:
+		  for(int i = 0; i < 3; i++)
+		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 45)-45,"shot.gif"));
+	      break;
+		case 2:
+	      for(int i = 0; i < 5; i++)  
+		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 22.5)-45,"shot.gif"));
+	 	  break;  
 	  }
+	  
 	}
 	
 	public void createAlien() {
-	  if (System.currentTimeMillis() - lastAlienTime < alienTime){
+	  // min amount of time before alien spawn. Throw in some randomness here? I guess it works well as is
+	  if (System.currentTimeMillis() - lastAlienTime < alienTime)
 	     return;
-	  }else {
+	  
+	  // Reset lastAlienTime to now
 	  lastAlienTime = System.currentTimeMillis();
-	    for(int i = 0;i<level;i++) {
-	      aliens.add(new Alien(gen.nextInt(WIDTH-70),0,Alien.NORMAL,"alien.gif"));
-	    }
-	  } 
+	  
+	  // add to alien list
+	  for(int i = 0;i<level;i++)
+	    aliens.add(new Alien(gen.nextInt(WIDTH-70),0,Alien.NORMAL,"alien.gif"));
+	    
+	  
 	}
 	
 	public void createBonus() {
+	  // Everytime an alien dies a bonus is born
 	  if (canCreateBonus) {
 	    int bonusId = gen.nextInt(bonusTime);
 		bonuses.add(new Bonus(bonusX,bonusY,bonusId,"ship.gif"));
@@ -351,34 +316,80 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	}
 	
 	public void processExplosions() {
-	  if(explosionHappened) {
-	    if(boss.isDead) {
-		  for(int i = boss.getX();i<boss.getWidth();i++) {
-		    explosions.add(new Explosion(5,i,(int)Math.random() * boss.getHeight() + boss.getY(),boss.getWidth()/2));
-		  }
-		  explosionHappened = false;
-		}else{
-	    explosions.add(new Explosion(5,explX,explY,30));
+	  // The less mustaches I have to read through, the happier I am. It's a preference thing though..
+	  if(!explosionHappened)
+	  	return;
+
+	  if(boss.isDead){
+		for(int i = boss.getX();i<boss.getWidth();i++)
+		  explosions.add(new Explosion(5,i,(int)Math.random() * boss.getHeight() + boss.getY(),boss.getWidth()/2));
 		explosionHappened = false;
-		}
+	  	return;
 	  }
+
+	  explosions.add(new Explosion(5,explX,explY,30));
+	  explosionHappened = false;
 	  
 	}
 	
 	public void levelDone() {
+
+
 	    g.setFont(new Font("Serif",Font.BOLD,50));
 	    g.setColor(Color.red);
 	    g.drawString("Level Complete",(WIDTH/2) - 60,HEIGHT/2);
 	    g.setFont(new Font("garamond",Font.PLAIN,40));
 	    g.setColor(Color.blue);
 	    g.drawString("Your Score: "+ score,400,450);
-		
-		level++;
+
+		if(!reset)
+			reset = true;
+
+		if(!transition)
+			return;
+
+		reset = false;
+		transition = false;
+
+		reset(++level);
 		alienTime -= 100;
 		boss.difficulty++;
-		if(level%2 == 0) {
+		if(level%2 == 0)
 		  bonusTime += 3;
-		}
+	}
+	
+	public void gameOver() {
+	  g = (Graphics2D)buffer.getDrawGraphics();
+	 
+	  g.setFont(new Font("Serif",Font.BOLD,60));
+	  g.setColor(Color.red);
+	  g.drawString("YOU ARE DEAD!!!",(WIDTH/2) - 60,HEIGHT/2);
+	  g.setFont(new Font("garamond",Font.PLAIN,40));
+	  g.setColor(Color.blue);
+	  g.drawString("Your Score: "+ score,400,450);	
+	  
+	  if(!reset){
+	    reset = true;
+	    buffer.show();
+	  }
+
+	  if(!transition)
+	    return;
+
+	  reset = false;
+	  transition = false;
+
+	  g.dispose();
+
+	  init();
+
+
+	  
+	  if(score > highScore)
+	    highScore = score;
+	}
+
+	private void reset(int level){
 		remEnemies = TARGET_AMOUNT + (level*5);
 	    player.isDead = false;
 	    boss.isDead = false;
@@ -394,24 +405,6 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	    boss.setHealth(400);
 	    player.setX(383);
 	    player.setY(512);
-	}
-	
-	public void gameOver() {
-	  g = (Graphics2D)buffer.getDrawGraphics();
-	 
-	    g.setFont(new Font("Serif",Font.BOLD,60));
-	    g.setColor(Color.red);
-	    g.drawString("YOU ARE DEAD!!!",(WIDTH/2) - 60,HEIGHT/2);
-	    g.setFont(new Font("garamond",Font.PLAIN,40));
-	    g.setColor(Color.blue);
-	    g.drawString("Your Score: "+ score,400,450);
-		
-	  g.dispose();
-	  buffer.show();
-	  
-	  if(score > highScore){
-	    highScore = score;
-	  }
 	}
 
     public static void main(String args[]){

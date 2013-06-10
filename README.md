@@ -14,8 +14,12 @@ How do I play?
 
 `cd space-desktop`
 
+`javac Space`
+
 `java Space`
 
 Arrows to move, space to attack
 
 enjoy
+
+.class files are not included to ensure up to date build every time.

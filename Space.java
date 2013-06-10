@@ -59,16 +59,16 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  window.add("Center",this);
 	  window.setDefaultCloseOperation(3);
 	  window.setSize(WIDTH,HEIGHT);
-	  window.setIconImage(new ImageIcon("ship.png").getImage());
+	  window.setIconImage(new ImageIcon("images/ship.png").getImage());
 	  window.setVisible(true);
-	  player = new Player(384,600,100,"ship.png");
-	  boss = new Boss(100,20,400,"alien.gif");
+	  player = new Player(384,600,100,"images/ship.png");
+	  boss = new Boss(100,20,400,"images/alien.gif");
 	  setIgnoreRepaint(true);
 	 
 	  createBufferStrategy(3);
 	  buffer = getBufferStrategy();
 	  
-	  background = new ImageIcon("background.jpg").getImage();
+	  background = new ImageIcon("images/background.jpg").getImage();
 	  
 	  startGame(); 	
 	}
@@ -80,8 +80,8 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	   backgroundY = -background.getHeight(null)/4;
 	   alienTime = 1000;
 	   //Shouldn't gun state be on Player anyway?
-	   gunState = 1;
-	   player.shieldTime = 0
+	   gunState = 0;
+	   player.shieldTime = 0;
 	   boss.difficulty = 1;
 	   score = 0;
 	   level = 1;
@@ -286,15 +286,15 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  // Switches are cleaner
       switch(gunState){
       	case 0:
-          bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10,0,"shot.gif")); 	   
+          bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10,0,"images/shot.gif")); 	   
 	 	  break;
 	  	case 1:
 		  for(int i = 0; i < 3; i++)
-		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 45)-45,"shot.gif"));
+		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 45)-45,"images/shot.gif"));
 	      break;
 		case 2:
 	      for(int i = 0; i < 5; i++)  
-		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 22.5)-45,"shot.gif"));
+		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 22.5)-45,"images/shot.gif"));
 	 	  break;  
 	  }
 	  
@@ -310,7 +310,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  
 	  // add to alien list
 	  for(int i = 0;i<level;i++)
-	    aliens.add(new Alien(gen.nextInt(WIDTH-70),0,Alien.NORMAL,"alien.gif"));
+	    aliens.add(new Alien(gen.nextInt(WIDTH-70),0,Alien.NORMAL,"images/alien.gif"));
 	    
 	  
 	}
@@ -319,7 +319,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  // Everytime an alien dies a bonus is born
 	  if (canCreateBonus) {
 	    int bonusId = gen.nextInt(bonusTime);
-		bonuses.add(new Bonus(bonusX,bonusY,bonusId,"ship.gif"));
+		bonuses.add(new Bonus(bonusX,bonusY,bonusId,"images/ship.gif"));
 		canCreateBonus = false;
 	  }
 	}

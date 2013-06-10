@@ -28,11 +28,11 @@ public class Bonus extends GameEntity {
 	
 	public void verifyBonus(int ID) {
 	  switch(ID) {
-	    case 0: setImage("health.png");
+	    case 0: setImage("images/health.png");
 		        break;
-		case 1: setImage("weapon_upgrade.png");
+		case 1: setImage("images/weapon_upgrade.png");
 		        break;		
-		case 2: setImage("shield.png");
+		case 2: setImage("images/shield.png");
                 break;		
 		default: setImage("");	
 	  }

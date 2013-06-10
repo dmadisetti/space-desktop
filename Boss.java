@@ -34,7 +34,7 @@ public class Boss extends GameEntity {
 	  for(int i = 0;i < difficulty;i++){
 	    int y = space.gen.nextInt((getHeight()*4));  
 	     for(int j = 0;j < difficulty * 3;j++) {
-		    space.aliens.add(new Alien(space.gen.nextInt(getWidth()*6)+getX(),y,Alien.BOSS,"alien.gif"));
+		    space.aliens.add(new Alien(space.gen.nextInt(getWidth()*6)+getX(),y,Alien.BOSS,"images/alien.gif"));
 		 }
 	   }
 	  }

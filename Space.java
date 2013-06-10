@@ -78,6 +78,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	   requestFocus();
 	   backgroundX = 0;
 	   backgroundY = -background.getHeight(null)/4;
+	   boss.difficulty = 1;
 	   score = 0;
 	   level = 1;
 	   reset(1);
@@ -387,7 +388,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 
 	  if(score > highScore)
 	    highScore = score;
-	
+
 	  init();
 
 	}

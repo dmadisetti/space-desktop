@@ -8,6 +8,9 @@ public class Alien extends GameEntity{
     final static int NORMAL = 0;
 	final static int BOSS = 1;
 
+	// Declare here for switch/better practice 
+	Graphics2D graphics;
+
 	int id;
 
 	public Alien(int x,int y,int id,String image) {
@@ -84,14 +87,14 @@ public class Alien extends GameEntity{
 	  switch(id){
 	    case NORMAL:
     	  g.drawImage(img,getX(),getY(),2*getWidth(),2*getHeight(),null);
-	      Graphics2D graphics = (Graphics2D)g.create();
+	      graphics = (Graphics2D)g.create();
 	      graphics.setColor(Color.red);
 	      graphics.fill3DRect(getX()+10,getY()-10,health,10,true);
 	      graphics.dispose();
 	      break;
 	    case BOSS:
 	      g.drawImage(img,getX(),getY(),getWidth(),getHeight(),null);
-	      Graphics2D graphics = (Graphics2D)g.create();
+	      graphics = (Graphics2D)g.create();
 	      graphics.setColor(Color.red);
 	      graphics.fill3DRect(getX()+10,getY()-10,health,10,true);
 	      graphics.dispose();

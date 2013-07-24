@@ -361,7 +361,12 @@ public class Space extends Canvas implements KeyListener,Runnable{
 
 		reset = false;
 		transition = false;
-
+		
+		/**increase difficulty
+			need to change the method of 
+			increasing difficulty.
+			(game gets unbeatable after a few levels)
+		*/
 		reset(++level);
 		alienTime -= 100;
 		boss.difficulty++;
@@ -371,7 +376,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	
 	public void gameOver() {
 	  g = (Graphics2D)buffer.getDrawGraphics();
-	 
+	 //messages need to be properly aligned
 	  g.setFont(new Font("Serif",Font.BOLD,60));
 	  g.setColor(Color.red);
 	  g.drawString("YOU ARE DEAD!!!",(WIDTH/2) - 60,HEIGHT/2);

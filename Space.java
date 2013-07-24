@@ -343,7 +343,6 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	
 	public void levelDone() {
 
-
 	    g.setFont(new Font("Serif",Font.BOLD,50));
 	    g.setColor(Color.red);
 	    g.drawString("Level Complete",(WIDTH/2) - 60,HEIGHT/2);
@@ -422,6 +421,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	    player.setY(512);
 	}
 
+	// TODO: Move to Menu Class. When we make one.
     public static void main(String args[]){
 	  new Space();	  
 	}

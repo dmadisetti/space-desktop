@@ -1,7 +1,10 @@
 import java.awt.*;
 
+// Thoughts on making this astract/an 
+// interface to build more detailed aliens??? 
 public class Alien extends GameEntity{
 
+	// Split into own classes
     final static int NORMAL = 0;
 	final static int BOSS = 1;
 
@@ -76,19 +79,23 @@ public class Alien extends GameEntity{
 	   }
 	}
 	
+	// Abstract draw. But if we do keep one class. Easier to manage with switch
 	public void draw(Graphics2D g) {
-	  if (id == NORMAL) {
-	    g.drawImage(img,getX(),getY(),2*getWidth(),2*getHeight(),null);
-	    Graphics2D graphics = (Graphics2D)g.create();
-	    graphics.setColor(Color.red);
-	    graphics.fill3DRect(getX()+10,getY()-10,health,10,true);
-	    graphics.dispose();
-	  } else if (id == BOSS) {
-	    g.drawImage(img,getX(),getY(),getWidth(),getHeight(),null);
-	    Graphics2D graphics = (Graphics2D)g.create();
-	    graphics.setColor(Color.red);
-	    graphics.fill3DRect(getX()+10,getY()-10,health,10,true);
-	    graphics.dispose();
+	  switch(id){
+	    case NORMAL:
+    	  g.drawImage(img,getX(),getY(),2*getWidth(),2*getHeight(),null);
+	      Graphics2D graphics = (Graphics2D)g.create();
+	      graphics.setColor(Color.red);
+	      graphics.fill3DRect(getX()+10,getY()-10,health,10,true);
+	      graphics.dispose();
+	      break;
+	    case BOSS:
+	      g.drawImage(img,getX(),getY(),getWidth(),getHeight(),null);
+	      Graphics2D graphics = (Graphics2D)g.create();
+	      graphics.setColor(Color.red);
+	      graphics.fill3DRect(getX()+10,getY()-10,health,10,true);
+	      graphics.dispose();
+		  break;
 	  }
 	}
 

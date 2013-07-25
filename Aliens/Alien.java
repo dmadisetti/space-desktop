@@ -2,7 +2,7 @@ import java.awt.*;
 
 // Thoughts on making this astract/an 
 // interface to build more detailed aliens??? 
-public class Alien extends GameEntity{
+abstract class Alien extends GameEntity{
 
 	// Split into own classes
     final static int NORMAL = 0;
@@ -30,7 +30,6 @@ public class Alien extends GameEntity{
 		}
 
 	    bounds.setSize(scale*getWidth(),scale*getHeight());
-		
 		
 	}
 	

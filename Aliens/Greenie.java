@@ -1,5 +1,3 @@
-import java.awt.*;
-
 // Thoughts on making this astract/an 
 // interface to build more detailed aliens??? 
 public class Alien extends GameEntity{

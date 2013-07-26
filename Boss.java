@@ -89,8 +89,11 @@ public class Boss extends Alien {
 	
 	  // Keep this guy alive for everrrr
 	  // Do we really want to though?
+	  System.out.println("Trying to Draw");
 	  if (isDead) return;
       super.draw(g);
+	
+
 	}
 
 }

@@ -3,8 +3,6 @@ import javax.swing.*;
 
 public abstract class GameEntity{
 
-   // Private happy
-   // No reason for gets otherwise
    double x;
    double y;
    Image img;

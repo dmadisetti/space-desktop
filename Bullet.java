@@ -4,10 +4,14 @@ public class Bullet extends GameEntity{
 
 	double angle;
 	int speed = 10;
-	String image = "images/shot.gif";
+
+	public String getImg(){
+		return "images/shot.gif";
+	}
 
 	public Bullet(int x,int y, double angle){
 	  super(x,y);
+	  setImage();
 	  this.angle = angle * (Math.PI/180);
 	}
 	

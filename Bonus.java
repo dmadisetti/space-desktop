@@ -10,7 +10,7 @@ public class Bonus extends GameEntity {
 	public Bonus(int x,int y,int id) {
 	  super(x,y);
 	  this.id = id;
-	  verifyBonus(id);
+	  setImage();
 	}
 	
 	public void update(Space space) {
@@ -26,20 +26,20 @@ public class Bonus extends GameEntity {
 	  bounds.setLocation(getX(),getY());
 	}
 	
-	public void verifyBonus(int ID) {
-	  switch(ID) {
+	public String getImg() {
+	  switch(id) {
 	    case 0: 
 	      image = "images/health.png";
 		  break;
 		case 1: 
-		  image =" images/weapon_upgrade.png";
+		  image = "images/weapon_upgrade.png";
 		  break;
 		case 2: 
 		  image = "images/shield.png";
           break;		
-		default: image = "";	
+		default: image = "";
 	  }
-	  img = new ImageIcon(this.getClass().getResource(image)).getImage();
+	  return image;
 	}
      
 	public void draw(Graphics2D g) {

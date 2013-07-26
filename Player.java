@@ -8,10 +8,14 @@ public class Player extends GameEntity{
 	int shieldTime = 310;
 	int	accel = 4;
 	int health = 100;
-	String image = "images/ship.png";
 	
+	public String getImg(){
+		return "images/ship.png";
+	}
+
 	public Player(int x,int y) {
 	  super(x,y);
+	  setImage();
 	}
 	
 	public void update(Space space) {

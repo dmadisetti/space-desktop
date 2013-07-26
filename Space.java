@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.*;
 
 // User directories
+// import Aliens.*;
 
 public class Space extends Canvas implements KeyListener,Runnable{
 
@@ -291,7 +292,7 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  // Switches are cleaner
       switch(gunState){
       	case 0:
-          bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10,0));
+          bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),0));
 	 	  break;
 	  	case 1:
 		  for(int i = 0; i < 3; i++)

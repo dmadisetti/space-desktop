@@ -28,7 +28,6 @@ public abstract class GameEntity{
 
    public void setImage() {
   
-     System.out.println(getImg());
      // No need to init the same image over and over.. 
      // I know speed isn't a serious issue - for the moment at least (Android?)
      // but Ideally we should generate code to do this once and wrap it all

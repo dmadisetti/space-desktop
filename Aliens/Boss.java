@@ -1,28 +1,34 @@
 import java.awt.*;
 
-public class Boss extends GameEntity {
+public class Boss extends Alien {
+
+	String image = "images/alien.gif";
 
     boolean isDead = false;
 	long alienTime = 200;
 	long lastAlienTime = 0;
 	int difficulty = 1;
 	int damage;
+	int x_vel = 3;
+	double fric = 1;
+	int scaleWidth = 6;
+	int scaleHeight = 4;
+	int barx = 10;
+	int bary = 10;
+	int health = 400;
 
-	public Boss(int x,int y,int health,String image) {
-	 super(x,y,health,image);
-	 x_vel = 3;
-	 fric = 1;
-	 bounds.setSize(getWidth()*6,getHeight()*4);
+	public Boss(int x,int y) {
+	 super(x,y);
 	}
 
     public void update(Space space) {
-	  if (x_pos <= 0) {
+	  if (x <= 0) {
 	    x_vel += accel;  
-	  } else if (x_pos >= space.WIDTH-getWidth()*6) {
+	  } else if (x >= space.WIDTH-getWidth()*6) {
 	    x_vel -= accel;
 	  }
 	  
-	  x_pos += x_vel;
+	  x += x_vel;
 	  x_vel *= fric;
 	  
 	  bounds.setLocation(getX(),getY());
@@ -34,7 +40,7 @@ public class Boss extends GameEntity {
 	  for(int i = 0;i < difficulty;i++){
 	    int y = space.gen.nextInt((getHeight()*4));  
 	     for(int j = 0;j < difficulty * 3;j++) {
-		    space.aliens.add(new Alien(space.gen.nextInt(getWidth()*6)+getX(),y,Alien.BOSS,"images/alien.gif"));
+		    space.aliens.add(new BossGreenie(space.gen.nextInt(getWidth()*6)+getX(),y));
 		 }
 	   }
 	  }
@@ -76,14 +82,11 @@ public class Boss extends GameEntity {
 	}
 	
 	public void draw(Graphics2D g) {
-	   Graphics2D graphics = (Graphics2D)g.create();
 	
-	  if (!isDead) {
-        graphics.drawImage(img,getX(),getY(),getWidth()*6,getHeight()*4,null);	
-	    graphics.setColor(Color.red);
-	    graphics.fill3DRect(getX()-50,getY()-10,health,10,true);
-	    graphics.dispose();
-	  } 
+	  // Keep this guy alive for everrrr
+	  // Do we really want to though?
+	  if (isDead) return;
+      super(g);
 	}
 
 }

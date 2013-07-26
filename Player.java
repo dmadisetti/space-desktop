@@ -2,63 +2,63 @@ import java.awt.*;
 
 public class Player extends GameEntity{
 	
-	int maxHealth;
+	int maxHealth = 100;
 	boolean isDead = false;
 	boolean shieldArmed = false;
-	int shieldTime;
+	int shieldTime = 310;
+	int	accel = 4;
+	int health = 100;
+	String image = "images/ship.png";
 	
-	public Player(int x,int y,int health,String image) {
-	  super(x,y,health,image);
-	  accel = 4;
-	  maxHealth = 100;
-	  shieldTime = 310;
+	public Player(int x,int y) {
+	  super(x,y);
 	}
 	
 	public void update(Space space) {
 	  
 	  if (space.leftPressed) {
-	    if(x_pos>=0) {
+	    if(x>=0) {
 		 x_vel -= accel; 
-		}else if(x_pos<=0){
+		}else if(x<=0){
 		 x_vel += accel;  
 		} 
 	  }   
 	  
 	  if (space.rightPressed) {
-	    if((x_pos + img.getWidth(null))<=space.WIDTH) {
+	    if((x + img.getWidth(null))<=space.WIDTH) {
 		 x_vel += accel; 
-		}else if((x_pos + img.getWidth(null))>=space.WIDTH){
+		}else if((x + img.getWidth(null))>=space.WIDTH){
 		 x_vel -= accel;  
 		} 
 		
 	  } 
 	  if (space.upPressed) {
-	    if(y_pos>=0) {
+	    if(y>=0) {
 		 y_vel -= accel; 
-		}else if(y_pos<=0){
+		}else if(y<=0){
 		 y_vel += accel;  
 		}
 	  }  
 	  
 	  if (space.downPressed) {
-	    if((y_pos+img.getHeight(null))<=space.HEIGHT) {
+	    if((y+img.getHeight(null))<=space.HEIGHT) {
 		 y_vel += accel; 
-		}else if(y_pos+img.getHeight(null)>=space.HEIGHT){
+		}else if(y+img.getHeight(null)>=space.HEIGHT){
 		 y_vel += -accel;  
 		}
 	  }
 	  
-	  if (x_pos<=0){
+	  if (x<=0){
         x_vel += accel;}
-	  else if(x_pos+img.getWidth(null)>=space.WIDTH){	
+	  else if(x+img.getWidth(null)>=space.WIDTH){	
 	    x_vel -= accel;}
-      if(y_pos<=0){
+      if(y<=0){
 	    y_vel += accel;}
-	  else if(y_pos+img.getHeight(null)>=space.HEIGHT){
+	  else if(y+img.getHeight(null)>=space.HEIGHT){
 	    y_vel += -accel;}	  
 	  	
-	  x_pos += x_vel;	
-	  y_pos += y_vel;	
+	  x += x_vel;	
+	  y += y_vel;	
 		
 	  y_vel *= fric;
 	  x_vel *= fric;
@@ -70,7 +70,8 @@ public class Player extends GameEntity{
 	     y_vel = 0;	 
 	  }	   
 	  bounds.setLocation(getX(),getY());
-	  
+
+	  // Be better to do while checkig aliens	  
       for(Alien alien : space.aliens) {
 	     if (bounds.intersects(alien.bounds)){
 			space.aliens.remove(alien);
@@ -91,6 +92,7 @@ public class Player extends GameEntity{
 		 }
 	  }
 	  
+	  // Might be better to do when doing bonuses
 	  for(Bonus bonus : space.bonuses) {
 	    if (bounds.intersects(bonus.bounds)){
 		   if (bonus.id == 0 && health < 100) {
@@ -129,7 +131,7 @@ public class Player extends GameEntity{
 	 if (!isDead){
 	 
 	 Graphics2D healthGraphics = (Graphics2D)graphics.create();
-	 graphics.rotate(x_vel/50,x_pos + img.getWidth(null)/2,y_pos + img.getHeight(null)/2);
+	 graphics.rotate(x_vel/50,x + img.getWidth(null)/2,y + img.getHeight(null)/2);
 	 
 	 graphics.drawImage(img,getX(),getY(),null);
 	 healthGraphics.setColor(Color.cyan);

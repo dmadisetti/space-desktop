@@ -1,64 +1,40 @@
-// Thoughts on making this astract/an 
-// interface to build more detailed aliens??? 
-public class Alien extends GameEntity{
+public class Greenie extends Alien{
 
-	// Split into own classes
-    final static int NORMAL = 0;
-	final static int BOSS = 1;
+	String image = "images/alien.gif";
 
-	// Declare here for switch/better practice 
-	Graphics2D graphics;
-
-	int id;
-	int scale = 1;
-
-	public Alien(int x,int y,int id,String image) {
-	    super(x,y,0,image);
-		this.id = id;
-		if (id == NORMAL) {
-		   scale = 2;
-		   fric = 0.7;
-		   setHealth(60);  
-		} else if (id == BOSS) {
-		   setHealth(30);
-		} else {
-		   id = NORMAL;
-		   fric = 0.7;
-		   setHealth(60);
-		}
-
-	    bounds.setSize(scale*getWidth(),scale*getHeight());
-		
-		
+	public Greenie(int x,int y) {
+	    super(x,y);
 	}
 	
 	public void update(Space space) {
-	   if (y_pos < space.HEIGHT) {
+	   if (y < space.HEIGHT) {
 	      y_vel += accel;
-		  if(y_pos < space.player.getY() && x_pos < space.player.getX()) {
-		    x_vel += accel;
-		  } else if(y_pos < space.player.getY() && x_pos > space.player.getX()) {
-		    x_vel -= accel;
-		  } else {
-		    x_vel = 0;
-		  }
-	   } else {
-	      space.aliens.remove(this);
-	   }
+		  
+		  // Ternaries are sexy
+		  // Bit of AI going on here
+		  x_vel = y < space.player.getY() && x < space.player.getX() ?
+		    x_vel + accel
+		  : y < space.player.getY() && x > space.player.getX() 		 ?
+		    x_vel - accel
+		  : 0;
+	  
+	   // You're as good as dead to me!!
+	   } else space.aliens.remove(this);
 	   
-	   y_pos += y_vel;
-	   x_pos += x_vel;
+	   // Maybe move to Alien
+	   y += y_vel;
+	   x += x_vel;
 	   y_vel *= fric;
 	   x_vel *= fric;
 	   
 	   bounds.setLocation(getX(),getY());
 	   
 	   for(Bullet bullet : space.bullets) {
-	     if (bullet.y_pos > y_pos){
-		    if(x_pos >= bullet.x_pos-200 && x_pos <= bullet.x_pos+200 && x_pos<bullet.x_pos) {
-			    x_pos -= accel;
-			}else if(x_pos >= bullet.x_pos-200 && x_pos <= bullet.x_pos+200 && x_pos>bullet.x_pos) {
-			    x_pos += accel;
+	     if (bullet.y > y){
+		    if(getX() >= bullet.getX() - 200 && x <= bullet.getX() + 200 && getX() < bullet.getX()) {
+			    x -= accel;
+			}else if(getX() >= bullet.getX()-200 && getX() <= bullet.getX() + 200 && getX()>bullet.getX()) {
+			    x += accel;
 			}
 		 }
 	   
@@ -80,14 +56,4 @@ public class Alien extends GameEntity{
 		  }
 	   }
 	}
-	
-	// Abstract draw. But if we do keep one class. Easier to manage with switch
-	public void draw(Graphics2D g) {
-    	g.drawImage(img,getX(),getY(),scale*getWidth(),scale*getHeight(),null);
-	    graphics = (Graphics2D)g.create();
-	    graphics.setColor(Color.red);
-	    graphics.fill3DRect(getX()+10,getY()-10,health,10,true);
-	    graphics.dispose();
-	}
-
 }

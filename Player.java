@@ -15,6 +15,7 @@ public class Player extends GameEntity{
 
 	public Player(int x,int y) {
 	  super(x,y);
+	  setHealth(100);
 	  setImage();
 	}
 	
@@ -22,11 +23,11 @@ public class Player extends GameEntity{
 	  
 	  if (space.leftPressed) {
 	    if(x>=0) {
-		 x_vel -= accel; 
+		 x_vel -= accel;
 		}else if(x<=0){
-		 x_vel += accel;  
-		} 
-	  }   
+		 x_vel += accel;
+		}
+	  }
 	  
 	  if (space.rightPressed) {
 	    if((x + img.getWidth(null))<=space.WIDTH) {
@@ -46,6 +47,8 @@ public class Player extends GameEntity{
 	  
 	  if (space.downPressed) {
 	    if((y+img.getHeight(null))<=space.HEIGHT) {
+
+
 		 y_vel += accel; 
 		}else if(y+img.getHeight(null)>=space.HEIGHT){
 		 y_vel += -accel;  

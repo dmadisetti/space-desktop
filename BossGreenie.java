@@ -1,9 +1,13 @@
 class BossGreenie extends Greenie{
 
-	int scaleHeight = 1;
-	int scaleWidth = 1;
-	int health = 30;
-	double frict = 0.9;
+	@Override
+	public void set(){
+		setHealth(30);
+		this.scaleHeight = 1;
+		this.scaleWidth = 1;
+		this.health = 30;
+		this.fric = 0.9;
+	}
 
 	public BossGreenie(int x,int y){
 		super(x,y);

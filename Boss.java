@@ -6,14 +6,18 @@ public class Boss extends Alien {
 	long alienTime = 200;
 	long lastAlienTime = 0;
 	int difficulty = 1;
+	int health = 400;
 	int damage;
 	int x_vel = 3;
-	double fric = 1;
-	int scaleWidth = 6;
-	int scaleHeight = 4;
-	int barx = 10;
-	int bary = 10;
-	int health = 400;
+
+	public void set(){
+		setHealth(health);
+		this.fric = 1;
+		this.scaleWidth = 6;
+		this.scaleHeight = 4;
+		this.barx = -50;
+		this.bary = 50;
+	}
 
 	public String getImg(){
 		return "images/alien.gif";
@@ -29,8 +33,6 @@ public class Boss extends Alien {
 	  } else if (x >= space.WIDTH-getWidth()*6) {
 	    x_vel -= accel;
 	  }
-	  
-	  System.out.println(isDead);
 
 	  x += x_vel;
 	  x_vel *= fric;
@@ -89,7 +91,6 @@ public class Boss extends Alien {
 	
 	  // Keep this guy alive for everrrr
 	  // Do we really want to though?
-	  System.out.println("Trying to Draw");
 	  if (isDead) return;
       super.draw(g);
 	

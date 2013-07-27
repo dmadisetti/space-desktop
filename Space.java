@@ -421,8 +421,8 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	    youLose = false;
 	    gameOver = false;
 	    levelDone = false;
-	    player.setHealth(100);
-	    boss.setHealth(400);
+	    player.health = 100;
+	    boss.health = 400;
 	    player.setX(383);
 	    player.setY(512);
 	}

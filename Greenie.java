@@ -1,5 +1,12 @@
 public class Greenie extends Alien{
 
+	public void set(){
+		setHealth(60);
+		this.fric = 0.7;
+		this.barx = 10;
+		this.bary = 10;
+	}
+
 	public String getImg(){
 		return "images/alien.gif";
 	}

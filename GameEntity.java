@@ -12,7 +12,7 @@ public abstract class GameEntity{
    double accel = 2;
    double fric = 0.9;
    Rectangle bounds;
-   public  int health;
+   public int health;
    String image;
    
    public GameEntity(int x,int y) {

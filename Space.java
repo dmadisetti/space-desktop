@@ -5,6 +5,9 @@ import java.awt.image.*;
 import java.util.Random;
 import java.util.concurrent.*;
 
+// User directories
+// import Aliens.*;
+
 public class Space extends Canvas implements KeyListener,Runnable{
 
     final static int HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -59,15 +62,18 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  window.add("Center",this);
 	  window.setDefaultCloseOperation(3);
 	  window.setSize(WIDTH,HEIGHT);
+	  
+	  // See comment under GameEntity about images
 	  window.setIconImage(new ImageIcon("images/ship.png").getImage());
 	  window.setVisible(true);
-	  player = new Player(384,600,100,"images/ship.png");
-	  boss = new Boss(100,20,400,"images/alien.gif");
+	  player = new Player(384,600);
+	  boss = new Boss(100,20);
 	  setIgnoreRepaint(true);
 	 
 	  createBufferStrategy(3);
 	  buffer = getBufferStrategy();
 	  
+	  // See comment under GameEntity about images
 	  background = new ImageIcon("images/background.jpg").getImage();
 	  
 	  startGame(); 	
@@ -286,15 +292,15 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  // Switches are cleaner
       switch(gunState){
       	case 0:
-          bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10,0,"images/shot.gif")); 	   
+          bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),0));
 	 	  break;
 	  	case 1:
 		  for(int i = 0; i < 3; i++)
-		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 45)-45,"images/shot.gif"));
+		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),(i * 45)-45));
 	      break;
 		case 2:
 	      for(int i = 0; i < 5; i++)  
-		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),10, (i * 22.5)-45,"images/shot.gif"));
+		    bullets.add(new Bullet(player.getX()+player.getWidth()/2,player.getY(),(i * 22.5)-45));
 	 	  break;  
 	  }
 	  
@@ -309,17 +315,17 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  lastAlienTime = System.currentTimeMillis();
 	  
 	  // add to alien list
+	  // Reflection/ Generated code to assign dynamically?
 	  for(int i = 0;i<level;i++)
-	    aliens.add(new Alien(gen.nextInt(WIDTH-70),0,Alien.NORMAL,"images/alien.gif"));
+	    aliens.add(new Greenie(gen.nextInt(WIDTH-70),0));
 	    
-	  
 	}
 	
 	public void createBonus() {
 	  // Everytime an alien dies a bonus is born
 	  if (canCreateBonus) {
 	    int bonusId = gen.nextInt(bonusTime);
-		bonuses.add(new Bonus(bonusX,bonusY,bonusId,"images/ship.gif"));
+		bonuses.add(new Bonus(bonusX,bonusY,bonusId));
 		canCreateBonus = false;
 	  }
 	}
@@ -415,8 +421,8 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	    youLose = false;
 	    gameOver = false;
 	    levelDone = false;
-	    player.setHealth(100);
-	    boss.setHealth(400);
+	    player.health = 100;
+	    boss.health = 400;
 	    player.setX(383);
 	    player.setY(512);
 	}

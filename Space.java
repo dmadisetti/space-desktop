@@ -316,9 +316,11 @@ public class Space extends Canvas implements KeyListener,Runnable{
 	  
 	  // add to alien list
 	  // Reflection/ Generated code to assign dynamically?
-	  for(int i = 0;i<level;i++)
-	    aliens.add(new Greenie(gen.nextInt(WIDTH-70),0));
-	    
+	  for(int i = 0;i<level;i++){
+	  	int next = gen.nextInt(WIDTH-70);
+	  	if(next % 2 == 0) aliens.add(new Bigeye(next,0));
+	    else aliens.add(new Greenie(next,0));
+	  }
 	}
 	
 	public void createBonus() {

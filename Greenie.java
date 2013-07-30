@@ -5,6 +5,7 @@ public class Greenie extends Alien{
 		this.fric = 0.7;
 		this.barx = 10;
 		this.bary = 10;
+		this.y_vel = 5;
 	}
 
 	public String getImg(){
@@ -16,20 +17,21 @@ public class Greenie extends Alien{
 	}
 	
 	public void update(Space space) {
-	   if (y < space.HEIGHT) {
-	      y_vel += accel;
+	   if (y > space.HEIGHT) {	  
+	     // You're as good as dead to me!!
+	     space.aliens.remove(this);
+	     return;
+	   }
+
+	   y_vel += accel;
 		  
-		  // Ternaries are sexy
-		  // Bit of AI going on here
-		  x_vel = y < space.player.getY() && x < space.player.getX() ?
-		    x_vel + accel
-		  : y < space.player.getY() && x > space.player.getX() 		 ?
-		    x_vel - accel
-		  : 0;
-	  
-	   // You're as good as dead to me!!
-	   } else space.aliens.remove(this);
-	   
+	   // Ternaries are sexy
+	   // Bit of AI going on here
+	   x_vel = y < space.player.getY() && x < space.player.getX() ?
+	     x_vel + accel
+	   : y < space.player.getY() && x > space.player.getX() 		 ?
+	     x_vel - accel
+	   : 0;
 	   // Maybe move to Alien
 	   y += y_vel;
 	   x += x_vel;

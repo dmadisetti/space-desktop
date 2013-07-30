@@ -1,18 +1,20 @@
-public class Greenie extends Alien{
+public class Bigeye extends Alien{
+
+	int r = 0;
 
 	public void set(){
 		setHealth(60);
 		this.fric = 0.7;
 		this.barx = 10;
 		this.bary = 10;
-		this.y_vel = 5;
+		this.y_vel = 17;
 	}
 
 	public String getImg(){
-		return "images/alien.gif";
+		return "images/alien2.png";
 	}
 
-	public Greenie(int x,int y) {
+	public Bigeye(int x,int y) {
 	    super(x,y);
 	}
 	
@@ -23,33 +25,34 @@ public class Greenie extends Alien{
 	     return;
 	   }
 
-	   y_vel += accel;
-		  
-	   // Ternaries are sexy
-	   // Bit of AI going on here
-	   x_vel = y < space.player.getY() && x < space.player.getX() ?
-	     x_vel + accel
-	   : y < space.player.getY() && x > space.player.getX() 		 ?
-	     x_vel - accel
-	   : 0;
-	   // Maybe move to Alien
-	   y += y_vel;
-	   x += x_vel;
-	   y_vel *= fric;
-	   x_vel *= fric;
-	   
+	   double a = space.player.getY() - getY();
+	   double b = getX() - space.player.getX();
+	   double c = Math.pow(b,2);
+
+	   if(a > 0){
+	   	if(!(b < (2-space.player.getWidth())/2 || b > (space.player.getWidth()/2) -2)){
+	   		y += 17;
+	   	}else{
+		   if(b > 0){
+		   	b -= 1;
+		   	x -= 1;
+		   }
+		   if(b < 0){
+		    b += 1;
+		    x += 1;
+		   }
+		   // Aim 2 infront of character for maximum death
+		   double newy = space.player.getY() - (a*(Math.pow(b,2)))/c;
+		   y = newy - y > 15 ? y + 12 : newy - y < 0 ? newy + 5 : newy - y > 7? newy - 5 : newy;
+	    }
+	   }else{
+	   	y += 7;
+	   }
+
 	   bounds.setLocation(getX(),getY());
 	   
 	   // Move to bullet 
-	   for(Bullet bullet : space.bullets) {
-	     if (bullet.y > y){
-		    if(getX() >= bullet.getX() - 200 && x <= bullet.getX() + 200 && getX() < bullet.getX()) {
-			    x -= accel;
-			}else if(getX() >= bullet.getX()-200 && getX() <= bullet.getX() + 200 && getX()>bullet.getX()) {
-			    x += accel;
-			}
-		 }
-	   
+	   for(Bullet bullet : space.bullets) {	   
 	      if (bullet.bounds.intersects(bounds)) {
 			  space.bullets.remove(bullet);
 		    if(health <= 0){

@@ -16,7 +16,7 @@ public class Boss extends Alien {
 		this.scaleWidth = 6;
 		this.scaleHeight = 4;
 		this.barx = -50;
-		this.bary = 50;
+		this.bary = 10;
 	}
 
 	public String getImg(){

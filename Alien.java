@@ -26,14 +26,9 @@ abstract class Alien extends GameEntity{
 	// Abstract draw. But if we do keep one class. Easier to manage with switch
 	public void draw(Graphics2D g) {
     	g.drawImage(img,getX(),getY(),scaleWidth*getWidth(),scaleHeight*getHeight(),null);
-	    if(this.getClass() == "Boss"){
-	      System.out.println(scaleWidth);
-	      System.out.println(barx);
-	      System.out.println(bary);
-  		}
 	    graphics = (Graphics2D)g.create();
 	    graphics.setColor(Color.red);
-	    graphics.fill3DRect(getX()+barx,getY()-bary,health,10,true);
+	    graphics.fill3DRect(getX()+this.barx,getY()-this.bary,this.health,10,true);
 	    graphics.dispose();
 	}
 

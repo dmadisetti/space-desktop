@@ -133,32 +133,31 @@ public class Player extends GameEntity{
 	
 	
 	public void draw(Graphics2D g) {
-	 Graphics2D graphics = (Graphics2D)g.create();
 	 
-	 if (!isDead){
+	  if (isDead) return;
+
+	  Graphics2D graphics = (Graphics2D)g.create();
 	 
-	 Graphics2D healthGraphics = (Graphics2D)graphics.create();
-	 graphics.rotate(x_vel/50,x + img.getWidth(null)/2,y + img.getHeight(null)/2);
+	  Graphics2D healthGraphics = (Graphics2D)graphics.create();
+	  graphics.rotate(x_vel/50,x + img.getWidth(null)/2,y + img.getHeight(null)/2);
 	 
-	 graphics.drawImage(img,getX(),getY(),null);
-	 healthGraphics.setColor(Color.cyan);
-	 healthGraphics.fill3DRect(30,30,120,70,true);
-	 healthGraphics.setColor(Color.blue);
-	 healthGraphics.draw3DRect(40,40,maxHealth,10,true);
-	 healthGraphics.fill3DRect(40,40,health,10,true);
-	 if(shieldArmed) {
+	  graphics.drawImage(img,getX(),getY(),null);
+	  healthGraphics.setColor(Color.cyan);
+	  healthGraphics.fill3DRect(30,30,120,70,true);
+	  healthGraphics.setColor(Color.blue);
+	  healthGraphics.draw3DRect(40,40,maxHealth,10,true);
+	  healthGraphics.fill3DRect(40,40,health,10,true);
+	  if(shieldArmed) {
 	    float[] grads = {.0f,.7f,1f};
 		Color[] colors = {new Color(0x00ffffff,true),new Color(0x300000ff,true),new Color(0xffffff)};
 	    RadialGradientPaint paint = new RadialGradientPaint((float)getX()+getWidth()/2,(float)getY()+getHeight()/2,getWidth()/2,grads,colors);
 		healthGraphics.setPaint(paint);
 	    healthGraphics.fillOval(getX(),getY(),getWidth(),getHeight());
-	 }
-	 healthGraphics.setColor(Color.red);
-	 healthGraphics.drawString("Score :"+Space.score+" Lvl :"+Space.level,40,70);
-	 healthGraphics.drawString("High Score: "+Space.highScore,40,90);
-	 graphics.dispose();
-	 healthGraphics.dispose();
-	 }  
+	  }
+	  healthGraphics.setColor(Color.red);
+	  healthGraphics.drawString("Score :"+Space.score+" Lvl :"+Space.level,40,70);
+	  healthGraphics.drawString("High Score: "+Space.highScore,40,90);
+	  graphics.dispose();
+	  healthGraphics.dispose();  
 	}
-
 }

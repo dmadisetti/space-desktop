@@ -14,9 +14,11 @@ How do I play?
 
 `cd space-desktop`
 
-`javac Space`
+`javac Space.java`
 
 `java Space`
+
+Assuming you have the JDK installed and the PATH variable (in Windows) set for javac, the commands will run.
 
 Arrows to move, space to attack
 

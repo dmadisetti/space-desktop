@@ -1,5 +1,7 @@
 Hey. So this is a readme about this game
 
+SOON TO HAVE AN ANDROID PORT!
+
 ** SPACE **
 ==========
 by Kerry Durand, Dylan Madisetti (I'm going to put some work in I swear), art by Rohaan Alport
@@ -22,4 +24,4 @@ Arrows to move, space to attack
 
 enjoy
 
-.class files are not included to ensure up to date build every time.
+*.class files are not included to ensure up to date build every time.
